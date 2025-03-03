@@ -1,0 +1,12 @@
+li {
+    list-style: none;
+}
+
+ul {
+    padding-left: 10px;
+}
+
+#main-table td {
+    border: 1px solid;
+    width: 300px;
+}
