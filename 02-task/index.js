@@ -30,18 +30,23 @@ addAmountBtn.addEventListener('click', (e) => {
         amountType: amountType.value,
         amountDate: amountDate.value
     }
+
+    const isValidNumber = /^[0-9]*$/.test(amountInput.value);
     
     if(amountInput.value === '') {
         toastr.error('Please, fill amount!');
         return
+    } else if (!isValidNumber) {
+        toastr.error('Please, enter the number value!')
+    } else {
+        createRecord(newAmount);
+        calcTotal(amountInput.value, amountType.value);
+    
+        localStorage.setItem("amountList", JSON.stringify([newAmount, ...amountList]));
+        toastr.success('New record was created successfully!')
+        amountInput.value = ''
     }
 
-    createRecord(newAmount);
-    calcTotal(amountInput.value, amountType.value);
-
-    localStorage.setItem("amountList", JSON.stringify([newAmount, ...amountList]));
-    toastr.success('New record was created successfully!')
-    amountInput.value = ''
 })
 
 function createRecord ({ id, amount, amountType, amountDate }) {
