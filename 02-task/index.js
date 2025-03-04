@@ -5,10 +5,11 @@ const amountInput = document.getElementById("amount");
 const amountType = document.getElementById("amountType");
 const amountDate = document.getElementById("amountDate");
 let amountDateValue = '';
-const sortBtn = document.getElementById("sort");
+
+const sortTypeBtn = document.getElementById("sortByType");
+const sortDateBtn = document.getElementById("sortByDate");
 
 const fullList = document.getElementById("fullList");
-// const costsUl = document.getElementById("costsList");
 
 const totalIncomeSpan = document.getElementById("totalIncome");
 const totalCostsSpan = document.getElementById("totalCosts");
@@ -113,7 +114,7 @@ function deleteAmount(amountId, amount, amountType) {
     }
 }
 
-sortBtn.addEventListener('change', (e) => {
+sortTypeBtn.addEventListener('change', (e) => {
     let amountList = JSON.parse(localStorage.getItem('amountList'));
 
     if (e.target.value === '') {
@@ -121,6 +122,19 @@ sortBtn.addEventListener('change', (e) => {
         amountList.forEach(amountRecord => createRecord(amountRecord));
     } else {
         amountList = amountList.filter(amount => amount.amountType === e.target.value);
+        fullList.innerHTML = '';
+        amountList.forEach(amountRecord => createRecord(amountRecord));
+    }
+});
+
+sortDateBtn.addEventListener('change', (e) => {
+    let amountList = JSON.parse(localStorage.getItem('amountList'));
+
+    if (e.target.value === '') {
+        fullList.innerHTML = '';
+        amountList.forEach(amountRecord => createRecord(amountRecord));
+    } else {
+        amountList = amountList.filter(amount => amount.amountDate === e.target.value);
         fullList.innerHTML = '';
         amountList.forEach(amountRecord => createRecord(amountRecord));
     }

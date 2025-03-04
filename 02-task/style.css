@@ -81,7 +81,7 @@ select {
     width: 160px;
 }
 
-#sort {
+#sortByType, #sortByDate {
     border: 1px solid;
     height: 30px;
 }
