@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate your budget</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+</head>
+<body>
+    <h1>Calculate your budget</h1>
+
+    <form>
+        <label>Amount</label>
+        <input id="amount"><br>
+
+        <label>Type</label>
+        <select id="amountType">
+            <option>incomes</option>
+            <option>costs</option>
+        </select><br>
+
+        <label>Date</label>
+        <time id="amountDate"></time><br>
+
+        <button id="addAmountBtn">ADD</button>
+
+        <!-- <label>Category</label>
+        <select>
+            <option>foods</option>
+            <option>clothes</option>
+        </select> -->
+    </form>
+
+    <table id="main-table">
+        <tr>
+            <td><ul id="incomesList"></ul></td>
+            <td><ul id="costsList"></ul></td>
+        </tr>
+        <tr>
+            <td>Total income: <span id="totalIncome"></span></td>
+            <td>Total costs: <span id="totalCosts"></span></td>
+        </tr>
+    </table>
+    
+    
+
+    <script type="module" src="index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+</body>
+</html>
