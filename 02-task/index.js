@@ -5,6 +5,7 @@ const amountInput = document.getElementById("amount");
 const amountType = document.getElementById("amountType");
 const amountDate = document.getElementById("amountDate");
 let amountDateValue = '';
+const sortBtn = document.getElementById("sort");
 
 const fullList = document.getElementById("fullList");
 // const costsUl = document.getElementById("costsList");
@@ -35,6 +36,10 @@ addAmountBtn.addEventListener('click', (e) => {
     }
     if (!isValidNumber) {
         return toastr.error('Please, enter a valid number!');
+    }
+
+    if (!amountDate.value) {
+        return toastr.error('Please, choose the date!');
     }
     
     let amountList = JSON.parse(localStorage.getItem('amountList')) || [];
@@ -107,3 +112,16 @@ function deleteAmount(amountId, amount, amountType) {
         updateTotal('totalCosts', totalCostsSpan);
     }
 }
+
+sortBtn.addEventListener('change', (e) => {
+    let amountList = JSON.parse(localStorage.getItem('amountList'));
+
+    if (e.target.value === '') {
+        fullList.innerHTML = '';
+        amountList.forEach(amountRecord => createRecord(amountRecord));
+    } else {
+        amountList = amountList.filter(amount => amount.amountType === e.target.value);
+        fullList.innerHTML = '';
+        amountList.forEach(amountRecord => createRecord(amountRecord));
+    }
+});

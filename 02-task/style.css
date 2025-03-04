@@ -81,6 +81,11 @@ select {
     width: 160px;
 }
 
+#sort {
+    border: 1px solid;
+    height: 30px;
+}
+
 #addAmountBtn {
     width: 100%;
     height: 50px;
