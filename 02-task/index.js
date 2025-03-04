@@ -16,12 +16,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const amountList = JSON.parse(localStorage.getItem('amountList'));
 
         amountList.forEach(amountRecord => createRecord(amountRecord));
-        totalIncomeSpan.innerHTML = localStorage.getItem('totalIncome')
+        totalIncomeSpan.innerHTML = localStorage.getItem('totalIncome');
+        totalCostsSpan.innerHTML = localStorage.getItem('totalCosts')
     }
 });
 
 addAmountBtn.addEventListener('click', (e) => {
     e.preventDefault();
+
+    const amountValue = amountInput.value.trim();
+    const isValidNumber = /^\d+$/.test(amountValue);
+
+    if (!amountValue) {
+        return toastr.error('Please, fill amount!');
+    }
+    if (!isValidNumber) {
+        return toastr.error('Please, enter a valid number!');
+    }
     
     let amountList = JSON.parse(localStorage.getItem('amountList')) || [];
     const newAmount = {
@@ -31,21 +42,13 @@ addAmountBtn.addEventListener('click', (e) => {
         amountDate: amountDate.value
     }
 
-    const isValidNumber = /^[0-9]*$/.test(amountInput.value);
+    createRecord(newAmount);
+    calcTotal(amountInput.value, amountType.value);
     
-    if(amountInput.value === '') {
-        toastr.error('Please, fill amount!');
-        return
-    } else if (!isValidNumber) {
-        toastr.error('Please, enter the number value!')
-    } else {
-        createRecord(newAmount);
-        calcTotal(amountInput.value, amountType.value);
+    localStorage.setItem("amountList", JSON.stringify([newAmount, ...amountList]));
+    toastr.success('New record was created successfully!')
+    amountInput.value = ''
     
-        localStorage.setItem("amountList", JSON.stringify([newAmount, ...amountList]));
-        toastr.success('New record was created successfully!')
-        amountInput.value = ''
-    }
 
 })
 
@@ -66,24 +69,16 @@ function createRecord ({ id, amount, amountType, amountDate }) {
 }
 
 function calcTotal(amount, amountType) {
+    const updateTotal = (type, totalSpan) => {
+        const currentTotal = Number(localStorage.getItem(type)) || 0;
+        const newTotal = currentTotal + Number(amount);
+        localStorage.setItem(type, newTotal);
+        totalSpan.innerHTML = newTotal;
+    };
+
     if (amountType === 'incomes') {
-        if(!JSON.parse(localStorage.getItem('totalIncome'))) {
-            localStorage.setItem("totalIncome", amount);
-            totalIncome.innerHTML = amount
-        } else {
-            const totalIncome = Number(localStorage.getItem('totalIncome')) + Number(amount);
-            localStorage.setItem("totalIncome", totalIncome);
-            totalIncomeSpan.innerHTML = totalIncome
-        }
-    } else if (amountType === 'costs') {
-        if(!JSON.parse(localStorage.getItem('totalCosts'))) {
-            localStorage.setItem("totalCosts", amount);
-            totalCostsSpan.innerHTML = amount
-        } else {
-            const totalCosts = Number(localStorage.getItem('totalCosts')) + Number(amount);
-            localStorage.setItem("totalCosts", totalCosts);
-            totalCostsSpan.innerHTML = totalCosts
-        }
+        updateTotal('totalIncome', totalIncomeSpan);
+    } else {
+        updateTotal('totalCosts', totalCostsSpan);
     }
-    
 }
