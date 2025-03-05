@@ -14,9 +14,13 @@ const fullList = document.getElementById("fullList");
 const totalIncomeSpan = document.getElementById("totalIncome");
 const totalCostsSpan = document.getElementById("totalCosts");
 
+function getAmountList() {
+    return JSON.parse(localStorage.getItem('amountList')) || [];
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     if(localStorage.getItem('amountList')) {
-        const amountList = JSON.parse(localStorage.getItem('amountList'));
+        const amountList = getAmountList()
 
         amountList.forEach(amountRecord => createRecord(amountRecord));
         totalIncomeSpan.innerHTML = localStorage.getItem('totalIncome');
@@ -86,56 +90,30 @@ function calcTotal(amount, amountType) {
         totalSpan.innerHTML = newTotal;
     };
 
-    if (amountType === 'incomes') {
-        updateTotal('totalIncome', totalIncomeSpan);
-    } else {
-        updateTotal('totalCosts', totalCostsSpan);
-    }
+    amountType === 'incomes' ? updateTotal('totalIncome', totalIncomeSpan) : updateTotal('totalCosts', totalCostsSpan);
 }
 
 function deleteAmount(amountId, amount, amountType) {
-    let amountList = JSON.parse(localStorage.getItem('amountList'));
-
-    amountList = amountList.filter(amount => amount.id !== amountId)
-    localStorage.setItem("amountList", JSON.stringify(amountList));
+    const amountList = getAmountList();
+    const newAmountList = amountList.filter(amount => amount.id !== amountId);
+    localStorage.setItem("amountList", JSON.stringify(newAmountList));
     toastr.success('Amount was deleted successfully!');
 
     const updateTotal = (type, totalSpan) => {
-        const currentTotal = Number(localStorage.getItem(type)) || 0;
-        const newTotal = currentTotal - Number(amount);
+        const newTotal = (Number(localStorage.getItem(type)) || 0) - Number(amount);
         localStorage.setItem(type, newTotal);
         totalSpan.innerHTML = newTotal;
     };
 
-    if (amountType === 'incomes') {
-        updateTotal('totalIncome', totalIncomeSpan);
-    } else {
-        updateTotal('totalCosts', totalCostsSpan);
-    }
+    amountType === 'incomes' ? updateTotal('totalIncome', totalIncomeSpan) : updateTotal('totalCosts', totalCostsSpan);
 }
 
-sortTypeBtn.addEventListener('change', (e) => {
-    let amountList = JSON.parse(localStorage.getItem('amountList'));
+function sortList(filterKey, filterValue) {
+    fullList.innerHTML = '';
+    getAmountList()
+        .filter(amount => !filterValue || amount[filterKey] === filterValue)
+        .forEach(createRecord);
+}
 
-    if (e.target.value === '') {
-        fullList.innerHTML = '';
-        amountList.forEach(amountRecord => createRecord(amountRecord));
-    } else {
-        amountList = amountList.filter(amount => amount.amountType === e.target.value);
-        fullList.innerHTML = '';
-        amountList.forEach(amountRecord => createRecord(amountRecord));
-    }
-});
-
-sortDateBtn.addEventListener('change', (e) => {
-    let amountList = JSON.parse(localStorage.getItem('amountList'));
-
-    if (e.target.value === '') {
-        fullList.innerHTML = '';
-        amountList.forEach(amountRecord => createRecord(amountRecord));
-    } else {
-        amountList = amountList.filter(amount => amount.amountDate === e.target.value);
-        fullList.innerHTML = '';
-        amountList.forEach(amountRecord => createRecord(amountRecord));
-    }
-});
+sortTypeBtn.addEventListener('change', (e) => sortList("amountType", e.target.value));
+sortDateBtn.addEventListener('change', (e) => sortList("amountDate", e.target.value));
