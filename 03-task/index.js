@@ -16,16 +16,30 @@ nextBtn.addEventListener('click', () => {
         console.log("!!!", currentImgId)
     }
 
+    if(currentImgId === listItems.length) {
+        currentImg.classList.remove('active')
+        document.getElementById(1).classList.add('active')
+        currentImgId = 1;
+    }
+
 })
 
 prevBtn.addEventListener('click', () => {
     const currentImg = document.querySelector('.active')
 
-    if(currentImgId < listItems.length) {
+    if(currentImgId === 1) {
+        console.log("1111", currentImgId)
+        currentImg.classList.remove('active')
+        document.getElementById(listItems.length).classList.add('active')
+        currentImgId = listItems.length;
+    }
+
+    if(currentImgId <= listItems.length) {
         currentImg.classList.remove('active')
         document.getElementById(currentImgId - 1).classList.add('active')
         currentImgId -= 1;
         console.log("!!!", currentImgId)
     }
 
+   
 })
