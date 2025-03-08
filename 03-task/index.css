@@ -12,3 +12,13 @@
 .slider-img.active {
     display: block;
 }
+
+@keyframes active {
+    0% {opacity: 0;}
+    50% {opacity: 0.5;}
+    100% {opacity: 1;}
+}
+
+.active {
+    animation: active 1s linear 0s;
+}
