@@ -15,6 +15,17 @@ nextBtn.addEventListener('click', () => {
         currentImgId += 1;
         console.log("!!!", currentImgId)
     }
-    
+
+})
+
+prevBtn.addEventListener('click', () => {
+    const currentImg = document.querySelector('.active')
+
+    if(currentImgId < listItems.length) {
+        currentImg.classList.remove('active')
+        document.getElementById(currentImgId - 1).classList.add('active')
+        currentImgId -= 1;
+        console.log("!!!", currentImgId)
+    }
 
 })
