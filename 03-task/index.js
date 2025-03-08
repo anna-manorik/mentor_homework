@@ -1,7 +1,9 @@
 const prevBtn = document.getElementById("prev");
 const nextBtn = document.getElementById("next");
 const autoBtn = document.getElementById("auto");
-const currentImg = document.querySelector('.active')
+const stopBtn = document.getElementById("stop");
+const currentImg = document.querySelector('.active');
+let slidingLoop;
 
 const listItems = document.querySelectorAll(".slider-img");
 const images = Array.from(listItems).map((img, index) => img.id = index + 1);
@@ -45,8 +47,13 @@ prevBtn.addEventListener('click', () => {
     }
 })
 
+
 autoBtn.addEventListener ('click', () => {
-    setInterval(() => {
+    slidingLoop = setInterval(() => {
          slideNext()
     }, 2000);
+})
+
+stopBtn.addEventListener ('click', () => {
+    clearInterval(slidingLoop)
 })
