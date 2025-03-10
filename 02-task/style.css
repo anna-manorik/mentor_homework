@@ -1,0 +1,103 @@
+li {
+    list-style: none;
+}
+
+ul {
+    padding-left: 10px;
+}
+
+#main-table, #amountRecHeader {
+    display: block;
+    /* border: 1px solid; */
+    width: 400px;
+}
+
+.amount {
+    /* display: inline-block; */
+    width: 50px;
+    max-width: 100px;
+    text-align: center;
+}
+
+.amountType, .amountDate {
+    display: block;
+    width: 70px;
+    max-width: 100px;
+}
+
+.amountRec, #amountRecHeader {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* border: 1px solid; */
+    /* max-width: 350px; */
+    height: 30px;
+}
+
+li:nth-child(even) {
+    background-color: antiquewhite;
+}
+
+.delete-btn {
+    border: none;
+    background: none;
+    font-size: 10px;
+}
+
+#form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 100%;
+    padding: 50px;
+    margin-bottom: 30px;
+    border: 5px solid #04606e;
+    border-radius: 50px;
+    background-color: rgb(209, 251, 251);
+}
+
+label {
+    display: block;
+    width: 100px;
+    text-align: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+select, input {
+    display: inline-block;
+    margin: 5px 0 15px;
+    width: 150px;
+    height: 30px;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+select {
+    height: 40px;
+    width: 160px;
+}
+
+#sortByType, #sortByDate {
+    border: 1px solid;
+    height: 30px;
+}
+
+#addAmountBtn {
+    width: 100%;
+    height: 50px;
+    background-color: #04606e;
+    border: 5px solid #fff;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#amountRecHeader {
+background-color: rgb(249, 207, 153);
+}

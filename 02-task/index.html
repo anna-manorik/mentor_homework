@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate your budget</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+</head>
+<body>
+    <h1>Calculate your budget</h1>
+
+    <form id="form">
+        <label>Amount</label>
+        <input id="amount"><br>
+
+        <label>Type</label>
+        <select id="amountType">
+            <option>incomes</option>
+            <option>costs</option>
+        </select><br>
+
+        <label>Date</label>
+        <input type="date" id="amountDate"><br>
+
+        <button id="addAmountBtn">ADD</button>
+    </form>
+
+    <label class="sort-label">Sort by type: </label>
+        <select id="sortByType" class="select">
+            <option></option>
+            <option>incomes</option>
+            <option>costs</option>
+        </select>
+
+    <label class="sort-label">Sort by date: </label>
+        <input type="date" id="sortByDate"><br>
+    
+    <section id="main-table">
+        <div id="amountRecHeader">
+            <div class=""><span>AMOUNT</span></div>
+            <div class=""><span>TYPE</span></div>
+            <span>DATE</span>
+            <span>DELETE</span>
+        </div>
+        <ul id="fullList"></ul>
+
+        Total income: <span id="totalIncome"></span><br>
+        Total costs: <span id="totalCosts"></span>
+    </section>
+    
+
+    <script type="module" src="index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+</body>
+</html>
