@@ -33,41 +33,28 @@ addTaskBtn.addEventListener('click', (e) => {
 
     createTask(newTodo);
 
-    localStorage.setItem("todoList", JSON.stringify([newTodo, ...todoList]));
+    todoList.unshift(newTodo);
+    localStorage.setItem("todoList", JSON.stringify(todoList));
     toastr.success('New task was created successfully!')
     description.value = ''
 })
 
-sortBtn.addEventListener('change', (e) => {
-    let todoList = JSON.parse(localStorage.getItem('todoList'));
+sortBtn.addEventListener('change', (e) => sortTodoList(e.target.value))
 
-    const priorityLevels = { 
-        "ASAP": 0, 
-        "Highest": 1, 
-        "High": 2,
-        "Medium": 3, 
-        "Low": 4, 
-    };
+function sortTodoList(order) {
+    let todoList = JSON.parse(localStorage.getItem('todoList')) || [];
+    const priorityLevels = { "ASAP": 0, "Highest": 1, "High": 2, "Medium": 3, "Low": 4 };
 
-    if(e.target.value === 'To the highest') {
-        todoList = todoList.sort((firstTodo, secondTodo) => {
-            return priorityLevels[secondTodo.priority] - priorityLevels[firstTodo.priority]
-        })
-        todoListUl.innerHTML = '';
-        todoList.forEach(todo => createTask(todo));
-        localStorage.setItem("todoList", JSON.stringify(todoList));
-    } else if (e.target.value === 'To the lowest') {
-        todoList = todoList.sort((firstTodo, secondTodo) => {
-            return priorityLevels[firstTodo.priority] - priorityLevels[secondTodo.priority]
-        })
-        todoListUl.innerHTML = '';
-        todoList.forEach(todo => createTask(todo));
-        localStorage.setItem("todoList", JSON.stringify(todoList));
-    } else {
-        return
+    if (order === 'To the highest') {
+        todoList.sort((a, b) => priorityLevels[b.priority] - priorityLevels[a.priority]);
+    } else if (order === 'To the lowest') {
+        todoList.sort((a, b) => priorityLevels[a.priority] - priorityLevels[b.priority]);
     }
-    
-})
+
+    todoListUl.innerHTML = '';
+    todoList.forEach(todo => createTask(todo));
+    localStorage.setItem("todoList", JSON.stringify(todoList));
+}
 
 function createTask({ description, priority, status, id }) {
     const li = document.createElement("li");
