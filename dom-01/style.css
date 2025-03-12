@@ -1,0 +1,28 @@
+#calendar {
+    width: 300px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day {
+    padding: 10px;
+    background: #f5f5f5;
+    cursor: pointer;
+}
+
+.day:nth-child(7n) {
+    padding: 10px;
+    background: #ea8e8e;
+    cursor: pointer;
+}
+
+.day:hover {
+    background: #ddd;
+}
