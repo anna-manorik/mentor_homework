@@ -51,12 +51,13 @@ select {
     cursor: pointer;
 }
 
-#slide-buttons {
+/* #slide-buttons {
     display: none;
-}
+} */
 
 #picsList {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-start;
     max-width: 900px;
 }
@@ -79,4 +80,83 @@ select {
     height: auto;
     background-size: cover;
     margin-right: 20px;
+}
+
+#lightbox {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    flex-direction: column;
+}
+
+#lightbox img {
+    max-width: 80%;
+    max-height: 80%;
+    border-radius: 10px;
+}
+
+#lightbox.hidden {
+    display: none;
+}
+
+#closeBtn {
+    position: absolute;
+    top: 20px; right: 30px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+}
+
+#slider {
+    position: relative;
+    width: 100%;
+    /* height: 100%; */
+    overflow: hidden;
+}
+
+.slider-img {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.slider-img.active {
+    display: block;
+}
+
+@keyframes active {
+    0% {opacity: 0;}
+    50% {opacity: 0.5;}
+    100% {opacity: 1;}
+}
+
+.active {
+    animation: active 1s linear 0s;
+}
+
+#prev, #next{
+    width: 50px;
+    margin-top: 30px;
+    height: 40px;
+    background-color: #43daf4;
+    border: 4px solid #024854;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+#slide-buttons{
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 80%;
+}
+
+button {
+    cursor: pointer;
 }
