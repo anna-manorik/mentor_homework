@@ -39,6 +39,11 @@ function createCalendar(year, month) {
         dayDiv.addEventListener("click", (e) => {
             eventListUl.innerHTML = '';
             const array = eventsList.filter(event => event.eventDate === e.target.id)
+
+            if (array.length === 0) {
+                eventListUl.innerHTML = 'Any events for this date';
+                return
+            }
             array.forEach(element => {showEvent(element)});
         });
 
