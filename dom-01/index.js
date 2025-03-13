@@ -7,6 +7,9 @@ const eventListUl = document.getElementById("eventListUl");
 
 let eventsList = JSON.parse(localStorage.getItem('eventsList')) || [];
 
+const today = new Date();
+createCalendar(today.getFullYear(), today.getMonth());
+
 function createCalendar(year, month) {
     const calendarDiv = document.getElementById("calendar");
     calendarDiv.innerHTML = "";
@@ -45,10 +48,6 @@ function createCalendar(year, month) {
     calendarDiv.appendChild(calendarGrid);
 }
 
-const today = new Date();
-createCalendar(today.getFullYear(), today.getMonth());
-
-
 addEventBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -62,20 +61,19 @@ addEventBtn.addEventListener('click', (e) => {
         return toastr.error('Please, choose the date!');
     }
     
-    let eventsList = JSON.parse(localStorage.getItem('eventsList')) || [];
     const newEvent = {
         id: nanoid(),
         eventName: eventNameInput.value,
         eventDate: eventDate.value
     }
     
-    localStorage.setItem("eventsList", JSON.stringify([newEvent, ...eventsList]));
+    eventsList.unshift(newEvent)
+    localStorage.setItem("eventsList", JSON.stringify(eventsList));
     toastr.success('New record was created successfully!')
     eventNameInput.value = ''
 })
 
 function showEvent ({ id, eventName, eventDate }) {
-    // eventListUl.innerHTML = '';
     const li = document.createElement("li");
     li.innerHTML = `
     <div class="">
@@ -94,9 +92,7 @@ function showEvent ({ id, eventName, eventDate }) {
 }
 
 function deleteEvent(eventItemId) {
-    let eventsList = JSON.parse(localStorage.getItem('eventsList'));
-
-    eventsList = eventsList.filter(event => event.id !== eventItemId)
+    eventsList = eventsList.filter(event => event.id !== eventItemId);
     localStorage.setItem("eventsList", JSON.stringify(eventsList));
-    toastr.success('Task was deleted successfully!')
+    toastr.success('Event was deleted successfully!');
 }
