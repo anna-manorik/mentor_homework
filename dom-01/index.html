@@ -5,13 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Calendar</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 </head>
 <body>
     <h1>Event Calendar</h1>
     <div id="calendar"></div>
-    
 
+    <form id="form">
+        <label>Event</label>
+        <input id="eventName"><br>
+
+        <label>Date</label>
+        <input type="date" id="eventDate"><br>
+
+        <button id="addEventBtn">ADD EVENT</button>
+    </form>
+
+    <ul id="eventListUl"></ul>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script type="module" src="index.js"></script>
 </body>
 </html>
