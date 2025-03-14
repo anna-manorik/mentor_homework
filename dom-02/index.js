@@ -46,14 +46,12 @@ function filterTodoList(order) {
 
     if(order === "All") {
         todoList.forEach(todo => createTask(todo));
-        return
     } else {
         todoList = todoList.filter(todo => todo.status === order)
     }
     
     if(todoList.length === 0) {
         todoListUl.innerHTML = `Any tasks in ${order} `;
-        return
     } else {
         todoListUl.innerHTML = '';
         todoList.forEach(todo => createTask(todo));
