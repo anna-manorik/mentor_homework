@@ -65,18 +65,40 @@ function addNewPhone({ id, name, phone, category }) {
     });
 
     li.querySelector('.name').addEventListener('click', (e) => {
-        
         li.querySelector('.name').remove()
         li.insertAdjacentHTML("afterbegin", `<input value="${e.target.innerHTML}" id='nameInputChange'>`);
     
-        li.querySelector("#nameInputChange").onkeydown = function(event) {
-            if (event.key === "Enter") {
-                li.insertAdjacentHTML("afterbegin", `<span class="name">${li.querySelector("#nameInputChange").value}</span>`);
-                phoneList = phoneList.map(phone => phone.id === e.target.id ? { ...phone, name: li.querySelector("#nameInputChange").value } : phone )
-                localStorage.setItem("phoneList", JSON.stringify(phoneList));
-                li.querySelector('#nameInputChange').remove()
-            } 
-        };
+        li.querySelector("#nameInputChange").addEventListener('change', () => {
+            li.insertAdjacentHTML("afterbegin", `<span class="name">${li.querySelector("#nameInputChange").value}</span>`);
+            phoneList = phoneList.map(phone => phone.id === e.target.id ? { ...phone, name: li.querySelector("#nameInputChange").value } : phone )
+            localStorage.setItem("phoneList", JSON.stringify(phoneList));
+            li.querySelector('#nameInputChange').remove()
+        })
+    })
+
+    li.querySelector('.phone').addEventListener('click', (e) => {
+        li.querySelector('.phone').remove();
+
+        let newInput = document.createElement("input"); 
+        newInput.value = e.target.innerHTML; 
+        newInput.id = 'nameInputChange';
+        let secondChild = li.children[1];
+        if (secondChild) {
+            li.insertBefore(newInput, secondChild);
+        }
+
+        li.querySelector("#nameInputChange").addEventListener('change', () => {
+            let newSpan = document.createElement("span"); 
+            newSpan.innerHTML = li.querySelector("#nameInputChange").value; 
+            newSpan.classList.add('name');
+            if (secondChild) {
+                li.insertBefore(newSpan, secondChild);
+            }
+
+            phoneList = phoneList.map(phone => phone.id === e.target.id ? { ...phone, phone: li.querySelector("#nameInputChange").value } : phone )
+            localStorage.setItem("phoneList", JSON.stringify(phoneList));
+            li.querySelector('#nameInputChange').remove()
+        })
     })
 
     li.querySelector("#category").addEventListener('change', (e) => {
@@ -126,6 +148,11 @@ searchValue.addEventListener('input', (e) => {
     }
     
     phoneListUl.innerHTML = '';
-    phoneList.filter(phone => phone.name.includes(e.target.value) || phone.phone.includes(e.target.value)).forEach(phone => addNewPhone(phone));
+    let searchResult = phoneList.filter(phone => phone.name.includes(e.target.value) || phone.phone.includes(e.target.value));
 
+    if(searchResult.length === 0) {
+        phoneListUl.innerHTML = 'Any results';
+    } else {
+        searchResult.forEach(phone => addNewPhone(phone));
+    }
 })
