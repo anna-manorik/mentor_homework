@@ -12,17 +12,13 @@ let phoneList = JSON.parse(localStorage.getItem('phoneList')) || [];
 
 document.addEventListener("DOMContentLoaded", () => {
     if(localStorage.getItem('phoneList')) {
-        // const phoneList = JSON.parse(localStorage.getItem('phoneList'));
-
         phoneList.forEach(phone => addNewPhone(phone));
     }
-
 });
 
 addPhoneBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
-    
     const newPhone = {
         id: nanoid(),
         name: nameValue.value,
