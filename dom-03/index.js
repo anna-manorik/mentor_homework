@@ -1,24 +1,28 @@
 import { nanoid } from './node_modules/nanoid/nanoid.js';
 
-const nameValue = document.getElementById("name");
-const phoneValue = document.getElementById("phone");
-const categoryValue = document.getElementById("category");
+const nameValue = document.getElementById("nameInput");
+const phoneValue = document.getElementById("phoneInput");
+const categoryValue = document.getElementById("categoryInput");
 const addPhoneBtn = document.getElementById("addPhoneBtn");
 const phoneListUl = document.getElementById("phoneList");
 const filterBtn = document.getElementById("filter");
+const searchValue = document.getElementById("searchInput");
+
+let phoneList = JSON.parse(localStorage.getItem('phoneList')) || [];
 
 document.addEventListener("DOMContentLoaded", () => {
     if(localStorage.getItem('phoneList')) {
-        const phoneList = JSON.parse(localStorage.getItem('phoneList'));
+        // const phoneList = JSON.parse(localStorage.getItem('phoneList'));
 
         phoneList.forEach(phone => addNewPhone(phone));
     }
+
 });
 
 addPhoneBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
-    let phoneList = JSON.parse(localStorage.getItem('phoneList')) || [];
+    
     const newPhone = {
         id: nanoid(),
         name: nameValue.value,
@@ -27,7 +31,7 @@ addPhoneBtn.addEventListener('click', (e) => {
     }
 
     if(nameValue.value === '' || phoneValue.value === '') {
-        toastr.error('Please, fill description!');
+        toastr.error('Please, fill name and phone number!');
         return
     }
 
@@ -40,31 +44,12 @@ addPhoneBtn.addEventListener('click', (e) => {
     phoneValue.value = '';
 })
 
-filterBtn.addEventListener('change', (e) => filterPhonesList(e.target.value))
-
-function filterPhonesList(order) {
-    let phoneList = JSON.parse(localStorage.getItem('phoneList')) || [];
-
-    if(order === "All") {
-        phoneList.forEach(todo => addNewPhone(todo));
-    } else {
-        phoneList = phoneList.filter(phone => phone.category === order)
-    }
-    
-    if(phoneList.length === 0) {
-        phoneList.innerHTML = `Any tasks in ${order} `;
-    } else {
-        phoneListUl.innerHTML = '';
-        phoneList.forEach(phone => addNewPhone(phone));
-    }
-}
-
 function addNewPhone({ id, name, phone, category }) {
-    const li = document.createElement("li");
+    let li = document.createElement("li");
     li.innerHTML = `
-        <span class="name">${name}</span>
-        <span class="phone">${phone}</span>
-        <select id="priorityTodo">
+        <span id="${id}" class="name">${name}</span>
+        <span id="${id}" class="phone">${phone}</span>
+        <select id="category">
             <option>${category}</option>
             <option>Family</option>
             <option>Work</option>
@@ -79,28 +64,68 @@ function addNewPhone({ id, name, phone, category }) {
         deletePhone(id);
     });
 
-    // li.querySelector("#statusTodo").addEventListener('change', (e) => {
-    //     updateStatus(e.target.value, id)
-    // })
+    li.querySelector('.name').addEventListener('click', (e) => {
+        
+        li.querySelector('.name').remove()
+        li.insertAdjacentHTML("afterbegin", `<input value="${e.target.innerHTML}" id='nameInputChange'>`);
+    
+        li.querySelector("#nameInputChange").onkeydown = function(event) {
+            if (event.key === "Enter") {
+                li.insertAdjacentHTML("afterbegin", `<span class="name">${li.querySelector("#nameInputChange").value}</span>`);
+                phoneList = phoneList.map(phone => phone.id === e.target.id ? { ...phone, name: li.querySelector("#nameInputChange").value } : phone )
+                localStorage.setItem("phoneList", JSON.stringify(phoneList));
+                li.querySelector('#nameInputChange').remove()
+            } 
+        };
+    })
+
+    li.querySelector("#category").addEventListener('change', (e) => {
+        updateCategory(e.target.value, id)
+    })
 
     phoneListUl.appendChild(li);
 
     return li
 }
 
-// function updateStatus(newStatus, todoId) {
-//     let todoList = JSON.parse(localStorage.getItem('todoList'));
-//     todoList = todoList.map(todo => todo.id === todoId ? { ...todo, status: newStatus } : todo )
-//     localStorage.setItem("todoList", JSON.stringify(todoList));
-// }
+function updateCategory(newCategory, phoneId) {
+    phoneList = phoneList.map(phone => phone.id === phoneId ? { ...phone, category: newCategory } : phone )
+    localStorage.setItem("phoneList", JSON.stringify(phoneList));
+}
 
 function deletePhone(phoneItemId) {
-    let phoneList = JSON.parse(localStorage.getItem('phoneList'));
-
     phoneList = phoneList.filter(phone => phone.id !== phoneItemId)
     localStorage.setItem("phoneList", JSON.stringify(phoneList));
     toastr.success('Phone was deleted successfully!')
 }
 
+filterBtn.addEventListener('change', (e) => filterPhonesList(e.target.value))
 
+function filterPhonesList(order) {
+    let phoneList = JSON.parse(localStorage.getItem('phoneList')) || [];
 
+    if(order === "All") {
+        phoneList.forEach(todo => addNewPhone(todo));
+    } else {
+        phoneList = phoneList.filter(phone => phone.category === order)
+    }
+    
+    if(phoneList.length === 0) {
+        phoneListUl.innerHTML = `Any phones in ${order} category`;
+    } else {
+        phoneListUl.innerHTML = '';
+        phoneList.forEach(phone => addNewPhone(phone));
+    }
+}
+
+searchValue.addEventListener('input', (e) => {
+    if(e.target.value === '') {
+        phoneListUl.innerHTML = '';
+        phoneList.forEach(phone => addNewPhone(phone));
+        return
+    }
+    
+    phoneListUl.innerHTML = '';
+    phoneList.filter(phone => phone.name.includes(e.target.value) || phone.phone.includes(e.target.value)).forEach(phone => addNewPhone(phone));
+
+})

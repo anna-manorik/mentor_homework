@@ -12,7 +12,7 @@
 
     <form id="form">
         <label>Category</label>
-        <select id="category" class="select">
+        <select id="categoryInput" class="select">
             <option></option>
             <option>Family</option>
             <option>Work</option>
@@ -21,11 +21,11 @@
         </select>
 
         <label>Name*</label><br />
-        <input type="text" id="name">
+        <input type="text" id="nameInput">
         <span class="notice">*required</span>
 <br>
         <label>Phone*</label><br />
-        <input type="number" id="phone">
+        <input type="number" id="phoneInput">
         <span class="notice">*required</span>
         
         <button id="addPhoneBtn">SAVE</button>
@@ -39,6 +39,10 @@
             <option>Friends</option>
             <option>Other</option>
         </select>
+<br>
+    <label id="search-label">Search: </label>
+        <input id="searchInput">
+
 
     <ul id="phoneList"></ul>
 
