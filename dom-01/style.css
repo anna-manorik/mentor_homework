@@ -1,0 +1,82 @@
+li {
+    list-style: none;
+}
+
+#calendar {
+    width: 300px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day {
+    padding: 10px;
+    background: #f5f5f5;
+    cursor: pointer;
+}
+
+.day:nth-child(7n) {
+    padding: 10px;
+    background: #ea8e8e;
+    cursor: pointer;
+}
+
+.day:hover {
+    background: #ddd;
+}
+
+#form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 100%;
+    margin: 40px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 3px solid #bbc2c3;
+    border-radius: 20px;
+    background-color: rgb(246, 252, 252);
+}
+
+label {
+    display: block;
+    width: 100px;
+    text-align: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+input {
+    display: inline-block;
+    margin: 5px 0 10px;
+    width: 150px;
+    height: 30px;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+    border: none;
+    border: 3px solid #bbc2c3;
+}
+
+#addEventBtn {
+    width: 100%;
+    height: 50px;
+    background-color: #186539;
+    border: 5px solid #fff;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#addEventBtn:hover {
+    background-color: #042e16;
+}
