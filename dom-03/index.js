@@ -61,49 +61,61 @@ function addNewPhone({ id, name, phone, category }) {
     });
 
     li.querySelector('.name').addEventListener('click', (e) => {
-        li.querySelector('.name').remove()
-        li.insertAdjacentHTML("afterbegin", `<input value="${e.target.innerHTML}" id='nameInputChange'>`);
-    
-        li.querySelector("#nameInputChange").addEventListener('change', () => {
-            li.insertAdjacentHTML("afterbegin", `<span class="name">${li.querySelector("#nameInputChange").value}</span>`);
-            phoneList = phoneList.map(phone => phone.id === e.target.id ? { ...phone, name: li.querySelector("#nameInputChange").value } : phone )
-            localStorage.setItem("phoneList", JSON.stringify(phoneList));
-            li.querySelector('#nameInputChange').remove()
-        })
-    })
+        makeEditable(e.target, id, 'name');
+    });
 
     li.querySelector('.phone').addEventListener('click', (e) => {
-        li.querySelector('.phone').remove();
-
-        let newInput = document.createElement("input"); 
-        newInput.value = e.target.innerHTML; 
-        newInput.id = 'nameInputChange';
-        let secondChild = li.children[1];
-        if (secondChild) {
-            li.insertBefore(newInput, secondChild);
-        }
-
-        li.querySelector("#nameInputChange").addEventListener('change', () => {
-            let newSpan = document.createElement("span"); 
-            newSpan.innerHTML = li.querySelector("#nameInputChange").value; 
-            newSpan.classList.add('name');
-            if (secondChild) {
-                li.insertBefore(newSpan, secondChild);
-            }
-
-            phoneList = phoneList.map(phone => phone.id === e.target.id ? { ...phone, phone: li.querySelector("#nameInputChange").value } : phone )
-            localStorage.setItem("phoneList", JSON.stringify(phoneList));
-            li.querySelector('#nameInputChange').remove()
-        })
-    })
+        makeEditable(e.target, id, 'phone');
+    });
 
     li.querySelector("#category").addEventListener('change', (e) => {
-        updateCategory(e.target.value, id)
-    })
+        updateCategory(e.target.value, id);
+    });
 
     phoneListUl.appendChild(li);
 
-    return li
+    return li;
+}
+
+function makeEditable(element, id, fieldType) {
+    if (element.parentNode.querySelector('#nameInputChange')) {
+        return;
+    }
+    
+    const originalValue = element.innerHTML;
+    const originalElement = element;
+    
+    element.style.display = 'none';
+    
+    let inputField = document.createElement("input");
+    inputField.value = originalValue;
+    inputField.id = 'nameInputChange';
+    
+    element.parentNode.insertBefore(inputField, element.nextSibling);
+    
+    inputField.focus();
+    
+    inputField.addEventListener('blur', () => saveEdit(inputField, originalElement, id, fieldType));
+    inputField.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            saveEdit(inputField, originalElement, id, fieldType);
+        }
+    });
+}
+
+function saveEdit(inputField, originalElement, id, fieldType) {
+    const newValue = inputField.value;
+    
+    originalElement.innerHTML = newValue;
+    originalElement.style.display = '';
+    
+    phoneList = phoneList.map(phone => 
+        phone.id === id ? { ...phone, [fieldType]: newValue } : phone
+    );
+    
+    localStorage.setItem("phoneList", JSON.stringify(phoneList));
+    
+    inputField.remove();
 }
 
 function updateCategory(newCategory, phoneId) {
@@ -127,7 +139,7 @@ function filterPhonesList(order) {
     } else {
         phoneList = phoneList.filter(phone => phone.category === order)
     }
-    
+
     if(phoneList.length === 0) {
         phoneListUl.innerHTML = `Any phones in ${order} category`;
     } else {
@@ -142,7 +154,7 @@ searchValue.addEventListener('input', (e) => {
         phoneList.forEach(phone => addNewPhone(phone));
         return
     }
-    
+
     phoneListUl.innerHTML = '';
     let searchResult = phoneList.filter(phone => phone.name.includes(e.target.value) || phone.phone.includes(e.target.value));
 
