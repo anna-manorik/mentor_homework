@@ -58,10 +58,10 @@ function createComment ({ id, name, comment, date, time, answers }) {
         <div class="comment-text"><span>${comment}</span></div>
         <button class="answer-btn">Answer</button>
         <button class="delete-btn" id=${id}>❌</button><br>
-        <textarea id="answer-textarea" style="display: none" placeholder="Enter your answer"></textarea>
+        <textarea class="answer-textarea" style="display: none" placeholder="Enter your answer"></textarea>
         ${answers.length !== 0 
-            ? `<ul id="answer-text">${answers.map(answer => `<li><span class="answer-item">${answer}</span></li>`).join("") || []}</ul>` 
-            : '<ul id="answer-text" style="display:none"></ul>'
+            ? `<ul class="answer-list">${answers.map(answer => `<li><span class="answer-item">${answer}</span></li>`).join("") || []}</ul>` 
+            : '<ul class="answer-list" style="display:none"></ul>'
         }
     </div>
     `;
@@ -85,13 +85,23 @@ function deleteComment(commentItemId) {
 }
 
 function addAnswer(commentId) {
-    const answerTextarea = document.getElementById(`${commentId}`).querySelector("#answer-textarea");
+    const answerTextarea = document.getElementById(`${commentId}`).querySelector(".answer-textarea");
     answerTextarea.style.display = 'block';
 
-    answerTextarea.addEventListener('blur', () => saveAnswer(commentId, answerTextarea.value))
+    answerTextarea.addEventListener('blur', () => {
+        if (answerTextarea.value.trim()) {
+            saveAnswer(commentId, answerTextarea.value);
+        } else {
+            answerTextarea.style.display = 'none';
+        }
+    })
     answerTextarea.addEventListener('keydown', (e) => {
         if(e.key === 'Enter') {
-            saveAnswer(commentId);
+            if (answerTextarea.value.trim()) {
+                saveAnswer(commentId, answerTextarea.value);
+            } else {
+                answerTextarea.style.display = 'none';
+            }
         }
     })
 
@@ -99,10 +109,11 @@ function addAnswer(commentId) {
 }
 
 function saveAnswer(commentId, newAnswer) {
-    const answerTextarea = document.getElementById(`${commentId}`).querySelector("#answer-textarea");
+    const answerTextarea = document.getElementById(`${commentId}`).querySelector(".answer-textarea");
     answerTextarea.style.display = 'none';
+    answerTextarea.value = ''
 
-    const answersToComment = document.getElementById(`${commentId}`).querySelector('#answer-text');
+    const answersToComment = document.getElementById(`${commentId}`).querySelector('.answer-list');
     answersToComment.style.display = 'inline-block';
 
     let li = document.createElement("li");

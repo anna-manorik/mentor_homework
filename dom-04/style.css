@@ -83,7 +83,7 @@ background-color: rgb(249, 207, 153);
     border-left: 1px solid;
 }
 
-#answer-text {
+.answer-list {
     margin-left: 30px;
     margin-top: 20px;
     padding: 10px;
