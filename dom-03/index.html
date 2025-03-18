@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhoneBook</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+<body>
+    <h1>My the best PhoneBook</h1>
+
+    <form id="form">
+        <label>Category</label>
+        <select id="categoryInput" class="select">
+            <option></option>
+            <option>Family</option>
+            <option>Work</option>
+            <option>Friends</option>
+            <option>Other</option>
+        </select>
+
+        <label>Name*</label><br />
+        <input type="text" id="nameInput">
+        <span class="notice">*required</span>
+<br>
+        <label>Phone*</label><br />
+        <input type="number" id="phoneInput">
+        <span class="notice">*required</span>
+        
+        <button id="addPhoneBtn">SAVE</button>
+    </form>
+
+    <label id="filter-label">Filter by category: </label>
+        <select id="filter" class="select">
+            <option>All</option>
+            <option>Family</option>
+            <option>Work</option>
+            <option>Friends</option>
+            <option>Other</option>
+        </select>
+<br>
+    <label id="search-label">Search: </label>
+        <input id="searchInput">
+
+
+    <ul id="phoneList"></ul>
+
+    <script type="module" src="index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+</body>
+</html>
+ 
