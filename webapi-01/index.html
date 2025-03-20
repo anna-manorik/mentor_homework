@@ -8,23 +8,8 @@
     <h2>WebSocket Чат</h2>
     <div id="chat"></div>
     <input type="text" id="messageInput" placeholder="Введіть повідомлення...">
-    <button onclick="sendMessage()">Надіслати</button>
+    <button id="sendBtn">Надіслати</button>
 
-    <script>
-        const socket = new WebSocket("ws://localhost:8080");
-
-        socket.onopen = () => console.log("✅ Підключено до сервера WebSocket");
-
-        socket.onmessage = (event) => {
-            const chat = document.getElementById("chat");
-            chat.innerHTML += `<p>${event.data}</p>`;
-        };
-
-        function sendMessage() {
-            const input = document.getElementById("messageInput");
-            socket.send(input.value);
-            input.value = "";
-        }
-    </script>
+    <script type="module" src="index.js"></script>
 </body>
 </html>
