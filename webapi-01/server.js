@@ -13,6 +13,7 @@ const wss = new WebSocket.Server({ server });
 
 let users = new Set();
 
+
 function broadcastUserCount() {
   const userCount = users.size;
   const userCountMessage = JSON.stringify({ 
@@ -31,7 +32,7 @@ wss.on("connection", (ws) => {
   console.log("✅ Користувач підключився!");
   
   users.add(ws);
-  
+
   ws.send(JSON.stringify({ 
     type: 'message',
     message: "Ласкаво просимо!" 
