@@ -4,32 +4,44 @@ const addParagrathBtn = document.getElementById('add-paragrath');
 const valueInput = document.getElementById('main-value');
 const mainContainer = document.getElementById('main-container');
 
+document.addEventListener('DOMContentLoaded', () => {
+    const savedContent = localStorage.getItem("savedContent")
+    if(savedContent) {
+        mainContainer.innerHTML = savedContent;
+    }
+})
+
 addH1Btn.addEventListener('click', (e) => {
     e.preventDefault();
     
     const h1 = document.createElement('h1')
-    h1.innerHTML = `<h1>${valueInput.value}</h1>`
+    h1.innerHTML = valueInput.value
     mainContainer.appendChild(h1)
 
-    valueInput.value = ''
+    saveHTML(mainContainer.innerHTML)
 })
 
 addH2Btn.addEventListener('click', (e) => {
     e.preventDefault();
     
     const h2 = document.createElement('h2')
-    h2.innerHTML = `<h2>${valueInput.value}</h2>`
+    h2.innerHTML = valueInput.value
     mainContainer.appendChild(h2)
 
-    valueInput.value = ''
+    saveHTML(mainContainer.innerHTML)
 })
 
 addParagrathBtn.addEventListener('click', (e) => {
     e.preventDefault();
     
     const p = document.createElement('p')
-    p.innerHTML = `<p>${valueInput.value}</p>`
+    p.innerHTML = valueInput.value
     mainContainer.appendChild(p)
 
-    valueInput.value = ''
+    saveHTML(mainContainer.innerHTML)
 })
+
+const saveHTML = (content) => {
+    localStorage.setItem("savedContent", content);
+    valueInput.value = ''
+}
