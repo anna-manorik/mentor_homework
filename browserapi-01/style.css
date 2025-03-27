@@ -1,0 +1,34 @@
+h1, h2, p {
+    font-weight: 400;
+}
+
+#form {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    background-color: rgb(251, 232, 205);
+    border: 3px solid rgb(240, 177, 83);
+    padding: 10px 5px;
+    margin: 10px 0;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+input {
+    height: 35px;
+    border-radius: 20px;
+    border: 1px solid;
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+span {
+    display: inline-block;
+    width: 200px;
+}
+
+#nameInputChange {
+    width: 150px;
+}
