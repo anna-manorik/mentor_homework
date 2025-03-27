@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аудіогід</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #map { height: 400px; width: 100%; margin: 10px 0; }
+        #places { list-style: none; padding: 0; }
+        .place { padding: 10px; border-bottom: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h2>Локаційний Аудіогід</h2>
+    <div id="map"></div>
+    <p id="status">Очікуємо дані про ваше місцезнаходження...</p>
+    <button id="startButton">Запустити аудіогід</button>
+    <h3>Місця:</h3>
+    <ul id="places"></ul>
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="index.js"></script>
+
+</body>
+</html>
