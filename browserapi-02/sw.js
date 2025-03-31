@@ -44,6 +44,8 @@ async function syncOfflineData() {
         const store = transaction.objectStore('offlineData');
         const data = await store.getAll();
 
+        console.log('data', data)
+
         if (data.length > 0) {
             await fetch('/api/sync', {
                 method: 'POST',
