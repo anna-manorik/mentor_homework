@@ -2,7 +2,6 @@ const CACHE_NAME = 'app-cache-v1';
 const STATIC_FILES = [
     './index.js',
     './index.html',
-    './indexedDB.js',
 ];
 
 self.addEventListener('install', (event) => {
@@ -28,6 +27,7 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('sync', (event) => {
+    console.log('!!sync', event)
     if (event.tag === 'syncData') {
         event.waitUntil(syncOfflineData());
     }
@@ -35,6 +35,8 @@ self.addEventListener('sync', (event) => {
 
 async function syncOfflineData() {
     const dbRequest = indexedDB.open('appDB', 1);
+
+    console.log('!!', dbRequest)
 
     dbRequest.onsuccess = async (event) => {
         const db = event.target.result;

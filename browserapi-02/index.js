@@ -4,21 +4,32 @@ if ('serviceWorker' in navigator) {
         .catch(error => console.error('❌ Помилка реєстрації SW:', error));
 }
 
+const dataValue = document.getElementById('data-input')
+
 document.querySelector('#sendData').addEventListener('click', async () => {
-    const data = { message: "Привіт, офлайн-збереження!" };
+    const data = { message: dataValue.value };
 
     if (navigator.onLine) {
         // Відправка даних на сервер
-        await fetch('/api/data', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json' }
-        });
-    } else {
-        // Збереження в IndexedDB і реєстрація sync
         saveDataLocally(data);
         navigator.serviceWorker.ready.then((sw) => {
             sw.sync.register('syncData');
         });
     }
 });
+
+function saveDataLocally(data) {
+    const request = indexedDB.open('appDB', 1);
+
+    request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        db.createObjectStore('offlineData', { keyPath: 'id', autoIncrement: true });
+    };
+
+    request.onsuccess = (event) => {
+        const db = event.target.result;
+        const transaction = db.transaction('offlineData', 'readwrite');
+        const store = transaction.objectStore('offlineData');
+        store.add(data);
+    };
+}
