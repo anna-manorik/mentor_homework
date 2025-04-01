@@ -27,36 +27,37 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('sync', (event) => {
-    console.log('!!sync', event)
+    console.log('Фоновий sync отриманий:', event.tag);
     if (event.tag === 'syncData') {
         event.waitUntil(syncOfflineData());
     }
 });
 
 async function syncOfflineData() {
+    console.log('Синхронізація offline даних...');
     const dbRequest = indexedDB.open('appDB', 1);
 
-    console.log('!!', dbRequest)
-
     dbRequest.onsuccess = async (event) => {
+        console.log('IndexedDB відкрито для sync');
         const db = event.target.result;
         const transaction = db.transaction('offlineData', 'readonly');
         const store = transaction.objectStore('offlineData');
-        const data = await store.getAll();
+        const getRequest = await store.getAll();
 
-        console.log('data', data)
+        getRequest.onsuccess = () => {
+            const data = getRequest.result;
 
-        if (data.length > 0) {
-            await fetch('/api/sync', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: { 'Content-Type': 'application/json' }
-            });
+            if (data.length > 0) {
+                self.clients.matchAll().then((clients) => {
+                    clients.forEach(client => {
+                        client.postMessage({ type: 'SYNC_COMPLETE', data });
+                    });
+                });
+            }
+        };
+    };
 
-            // Очищаємо локальну базу після успішної синхронізації
-            const clearTransaction = db.transaction('offlineData', 'readwrite');
-            const clearStore = clearTransaction.objectStore('offlineData');
-            clearStore.clear();
-        }
+    dbRequest.onerror = (event) => {
+        console.error('Помилка відкриття IndexedDB:', event.target.error);
     };
 }
