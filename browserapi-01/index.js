@@ -6,9 +6,6 @@ const addParagrathBtn = document.getElementById('add-paragrath');
 const valueInput = document.getElementById('main-value');
 const mainContainer = document.getElementById('main-container');
 
-const button1 = document.createElement("button");
-const button2 = document.createElement("button");
-
 let elementArray = JSON.parse(localStorage.getItem('elementArray')) || [];
 
 document.addEventListener('DOMContentLoaded', () => {
