@@ -82,7 +82,7 @@ function updateUI(data) {
     const dataValue = document.getElementById('data-list')
     dataValue.innerHTML = '';
 
-            data.map(record => {
+            data.forEach(record => {
                 const li = document.createElement('li')
                 li.textContent = record.message
                 dataValue.appendChild(li)
